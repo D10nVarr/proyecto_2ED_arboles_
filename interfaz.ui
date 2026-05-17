@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>VentanaPrincipal</class>
+ <widget class="QMainWindow" name="VentanaPrincipal">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>757</width>
+    <height>506</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QFrame" name="frame">
+      <property name="minimumSize">
+       <size>
+        <width>129</width>
+        <height>419</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>129</width>
+        <height>419</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Shadow::Raised</enum>
+      </property>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>111</width>
+         <height>121</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Tipos de árboles</string>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <widget class="QPushButton" name="BTarbol_bin">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>91</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="cursor">
+         <cursorShape>ArrowCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string>Arbol Binario</string>
+        </property>
+        <property name="autoRepeatInterval">
+         <number>104</number>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="BTarbol_abb">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>91</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Arbol ABB</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="BTarbol_avl">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>80</y>
+          <width>91</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Arbol AVL</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>150</y>
+         <width>111</width>
+         <height>121</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Operaciones</string>
+       </property>
+       <widget class="QPushButton" name="bt_insertar">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Insertar</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="bt_buscar">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Buscar</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="byeliminar">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>80</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Eliminar</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_3">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>290</y>
+         <width>111</width>
+         <height>111</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Recorridos</string>
+       </property>
+       <widget class="QPushButton" name="bt_ino">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>In-Orden</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="bt_preo">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Pre-Orden</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="bt_posto">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>80</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Post-Orden</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGraphicsView" name="graphicsView"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>757</width>
+     <height>33</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
