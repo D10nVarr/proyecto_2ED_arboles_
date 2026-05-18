@@ -662,7 +662,7 @@
          <string>Buscar</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="byeliminar">
+       <widget class="QPushButton" name="bt_eliminar">
         <property name="geometry">
          <rect>
           <x>10</x>
