@@ -1,8 +1,10 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow
+import json
+from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog
 from PySide6.QtWidgets import QGraphicsScene
 from PySide6.QtGui import QPen, QBrush, QColor
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QTimer
+
 
 
 from interfaz import Ui_VentanaPrincipal
@@ -32,14 +34,92 @@ class AplicacionArboles(QMainWindow):
         self.ui.bt_ino.clicked.connect(self.accion_inorden)
         self.ui.bt_posto.clicked.connect(self.accion_postorden)
 
-    def accion_guardar(self):
-        print("Guardando el estado actual de la estructura... (json pendiente)")
+        self.timer_animacion = QTimer()
+        self.timer_animacion.timeout.connect(self.paso_animacion)
+        self.lista_animacion = []
+        self.indice_animacion = 0
 
+        # Control de interfaz (Botones apagados)
+        self.controles_bloqueados = [
+            self.ui.bt_insertar, self.ui.bt_buscar, self.ui.bt_eliminar,
+            self.ui.bt_preo, self.ui.bt_ino, self.ui.bt_posto,
+            self.ui.entrada_nodo, self.ui.accion_guardar
+        ]
+
+        for control in self.controles_bloqueados:
+            control.setEnabled(False)
+
+        self.ui.p_recorridos.setText("Por favor, seleccione el tipo de árbol (ABB o AVL) para comenzar.")
+
+    # Motor de animación
+    def iniciar_animacion(self, lista_nodos):
+        self.lista_animacion = lista_nodos
+        self.indice_animacion = 0
+
+        self.dibujar_arbol(camino_resaltado=[])
+
+        self.timer_animacion.start(700)
+
+    def paso_animacion(self):
+
+        if self.indice_animacion < len(self.lista_animacion):
+
+            nodos_a_pintar = self.lista_animacion[:self.indice_animacion + 1]
+
+            self.dibujar_arbol(camino_resaltado=nodos_a_pintar)
+
+            self.indice_animacion += 1
+        else:
+
+            self.timer_animacion.stop()
+
+        # Guardado con (JSON)
+    def accion_guardar(self):
+
+        if self.mi_arbol is None or self.mi_arbol.raiz is None:
+            self.statusBar().showMessage("Error: El árbol está vacío, no hay nada que guardar.")
+            return
+
+        ruta_archivo, _ = QFileDialog.getSaveFileName(self, "Guardar Árbol", "", "JSON Files (*.json)")
+
+        if ruta_archivo:
+
+            datos_a_guardar = {
+                "tipo_arbol": "AVL" if isinstance(self.mi_arbol, ArbolAVL) else "ABB",
+                "nodos": self.mi_arbol.preorden()
+            }
+
+            with open(ruta_archivo, 'w') as archivo:
+                json.dump(datos_a_guardar, archivo, indent=4)
+
+            self.statusBar().showMessage(f"Árbol guardado exitosamente en: {ruta_archivo}")
 
     def accion_cargar(self):
-        print("Cargando estructura desde el archivo...")
-        self.actualizar_informacion_general()
-        self.dibujar_arbol()
+
+        ruta_archivo, _ = QFileDialog.getOpenFileName(self, "Cargar Árbol", "", "JSON Files (*.json)")
+
+        if ruta_archivo:
+
+            with open(ruta_archivo, 'r') as archivo:
+                datos_cargados = json.load(archivo)
+
+            if datos_cargados["tipo_arbol"] == "AVL":
+                self.mi_arbol = ArbolAVL()
+                self.statusBar().showMessage("Árbol AVL cargado desde archivo.")
+            else:
+                self.mi_arbol = ArbolABB()
+                self.statusBar().showMessage("Árbol ABB cargado desde archivo.")
+
+            for valor in datos_cargados["nodos"]:
+                self.mi_arbol.insertar(valor)
+
+            for control in self.controles_bloqueados:
+                control.setEnabled(True)
+
+            self.ui.p_recorridos.setText(f"Estructura cargada con {len(datos_cargados['nodos'])} nodos.")
+
+            self.actualizar_informacion_general()
+            self.dibujar_arbol()
 
     def dibujar_arbol(self, camino_resaltado=None):
         if camino_resaltado is None:
@@ -81,7 +161,7 @@ class AplicacionArboles(QMainWindow):
         self.escena.addEllipse(x - radio, y - radio, radio * 2, radio * 2, contorno_circulo, relleno_circulo)
 
         texto = self.escena.addText(str(nodo.valor))
-        #Centrado
+
         ancho_texto = texto.boundingRect().width()
         alto_texto = texto.boundingRect().height()
         texto.setPos(x - (ancho_texto / 2), y - (alto_texto / 2))
@@ -89,12 +169,20 @@ class AplicacionArboles(QMainWindow):
     def cambiar_a_abb(self):
         self.mi_arbol = ArbolABB()
         self.statusBar().showMessage("Árbol ABB (Vacío)")
-        print("Cambiado a árbol ABB.")
+
+        for control in self.controles_bloqueados:
+            control.setEnabled(True)
+        self.ui.p_recorridos.setText("Árbol Binario de Búsqueda listo.")
+        self.dibujar_arbol()
 
     def cambiar_a_avl(self):
         self.mi_arbol = ArbolAVL()
         self.statusBar().showMessage("Árbol AVL (Vacío)")
-        print("Cambiado a árbol AVL.")
+
+        for control in self.controles_bloqueados:
+            control.setEnabled(True)
+        self.ui.p_recorridos.setText("Árbol AVL listo.")
+        self.dibujar_arbol()
 
     #Operaciones
     def accion_insertar(self):
@@ -133,18 +221,22 @@ class AplicacionArboles(QMainWindow):
     def accion_preorden(self):
         lista_preorden = self.mi_arbol.preorden()
         texto = " -> ".join(map(str, lista_preorden))
-
         self.ui.p_recorridos.setText(f"Recorrido Pre-Orden:\n{texto}")
+        self.iniciar_animacion(lista_preorden)
 
     def accion_inorden(self):
         lista_inorden = self.mi_arbol.inorden()
         texto = " -> ".join(map(str, lista_inorden))
         self.ui.p_recorridos.setText(f"Recorrido In-Orden:\n{texto}")
 
+        self.iniciar_animacion(lista_inorden)
+
     def accion_postorden(self):
         lista_postorden = self.mi_arbol.postorden()
         texto = " -> ".join(map(str, lista_postorden))
         self.ui.p_recorridos.setText(f"Recorrido Post-Orden:\n{texto}")
+
+        self.iniciar_animacion(lista_postorden)
 
     #Encabezado con datos del arbol
     def actualizar_informacion_general(self):
