@@ -8,7 +8,7 @@ from PySide6.QtCore import Qt, QTimer
 
 
 from interfaz import Ui_VentanaPrincipal
-from clases_arboles import ArbolABB, ArbolAVL
+from clases_arboles import ArbolABB, ArbolAVL, ArbolBIN
 
 class AplicacionArboles(QMainWindow):
     def __init__(self):
@@ -42,6 +42,7 @@ class AplicacionArboles(QMainWindow):
         self.indice_animacion = 0
 
         # Control de interfaz (Botones apagados)
+
         self.controles_bloqueados = [
             self.ui.bt_insertar, self.ui.bt_buscar, self.ui.bt_eliminar,
             self.ui.bt_preo, self.ui.bt_ino, self.ui.bt_posto,
@@ -86,9 +87,27 @@ class AplicacionArboles(QMainWindow):
 
         if ruta_archivo:
 
+            if isinstance(self.mi_arbol, ArbolAVL):
+                tipo = "AVL"
+                nodos_guardar = self.mi_arbol.preorden()
+
+            elif isinstance(self.mi_arbol, ArbolBIN):
+                tipo = "BIN"
+                nodos_guardar = []
+                cola = [self.mi_arbol.raiz]
+                while len(cola) > 0:
+                    actual = cola.pop(0)
+                    nodos_guardar.append(actual.valor)
+                    if actual.izq is not None: cola.append(actual.izq)
+                    if actual.der is not None: cola.append(actual.der)
+
+            else:
+                tipo = "ABB"
+                nodos_guardar = self.mi_arbol.preorden()
+
             datos_a_guardar = {
-                "tipo_arbol": "AVL" if isinstance(self.mi_arbol, ArbolAVL) else "ABB",
-                "nodos": self.mi_arbol.preorden()
+                "tipo_arbol": tipo,
+                "nodos": nodos_guardar
             }
 
             with open(ruta_archivo, 'w') as archivo:
@@ -97,17 +116,22 @@ class AplicacionArboles(QMainWindow):
             self.statusBar().showMessage(f"Árbol guardado exitosamente en: {ruta_archivo}")
 
     def accion_cargar(self):
-
         ruta_archivo, _ = QFileDialog.getOpenFileName(self, "Cargar Árbol", "", "JSON Files (*.json)")
 
         if ruta_archivo:
-
             with open(ruta_archivo, 'r') as archivo:
                 datos_cargados = json.load(archivo)
 
-            if datos_cargados["tipo_arbol"] == "AVL":
+            tipo = datos_cargados["tipo_arbol"]
+
+            if tipo == "AVL":
                 self.mi_arbol = ArbolAVL()
                 self.statusBar().showMessage("Árbol AVL cargado desde archivo.")
+
+            #Caso especial de cargado para el arbol binario
+            elif tipo == "BIN":
+                self.mi_arbol = ArbolBIN()
+                self.statusBar().showMessage("Árbol BIN cargado desde archivo.")
             else:
                 self.mi_arbol = ArbolABB()
                 self.statusBar().showMessage("Árbol ABB cargado desde archivo.")
@@ -117,6 +141,11 @@ class AplicacionArboles(QMainWindow):
 
             for control in self.controles_bloqueados:
                 control.setEnabled(True)
+
+
+            if tipo == "BIN":
+                self.ui.bt_buscar.setEnabled(False)
+                self.ui.bt_eliminar.setEnabled(False)
 
             self.ui.p_recorridos.setText(f"Estructura cargada con {len(datos_cargados['nodos'])} nodos.")
 
@@ -170,7 +199,16 @@ class AplicacionArboles(QMainWindow):
 
 
     def cambiar_a_bin(self):
-        print("pendiente")
+        self.mi_arbol=ArbolBIN()
+        self.statusBar().showMessage("Árbol BIN (Vacío)")
+
+        for control in self.controles_bloqueados:
+            control.setEnabled(True)
+        self.ui.bt_buscar.setEnabled(False)
+        self.ui.bt_eliminar.setEnabled(False)
+
+        self.ui.p_recorridos.setText("Árbol Binario listo.")
+        self.dibujar_arbol()
 
 
     def cambiar_a_abb(self):

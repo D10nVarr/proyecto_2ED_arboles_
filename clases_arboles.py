@@ -234,3 +234,29 @@ class ArbolAVL(ArbolABB):
         z.altura = 1 + max(self.altura_nodo(z.izq), self.altura_nodo(z.der))
         y.altura = 1 + max(self.altura_nodo(y.izq), self.altura_nodo(y.der))
         return y
+
+class ArbolBIN(ArbolABB):
+    def __init__(self):
+        super().__init__()
+
+    def insertar(self, valor):
+        if self.raiz is None:
+            self.raiz = Nodo(valor)
+            return
+
+        cola = [self.raiz]#cola para almacenar nodos ya recorridos
+
+        while len(cola) > 0:
+            nodo_actual = cola.pop(0)
+
+            if nodo_actual.izq is None:
+                nodo_actual.izq = Nodo(valor)
+                break
+            else:
+                cola.append(nodo_actual.izq)
+
+            if nodo_actual.der is None:
+                nodo_actual.der = Nodo(valor)
+                break
+            else:
+                cola.append(nodo_actual.der)
