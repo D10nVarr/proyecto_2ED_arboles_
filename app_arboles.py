@@ -21,6 +21,8 @@ class AplicacionArboles(QMainWindow):
 
         self.escena = QGraphicsScene()
         self.ui.lienzo_arbol.setScene(self.escena)
+
+        self.ui.BTarbol_bin.clicked.connect(self.cambiar_a_bin)#Conección del boton de cambio de arbol binario
         self.ui.BTarbol_abb.clicked.connect(self.cambiar_a_abb)
         self.ui.BTarbol_avl.clicked.connect(self.cambiar_a_avl)
         self.ui.bt_insertar.clicked.connect(self.accion_insertar)
@@ -166,6 +168,11 @@ class AplicacionArboles(QMainWindow):
         alto_texto = texto.boundingRect().height()
         texto.setPos(x - (ancho_texto / 2), y - (alto_texto / 2))
 
+
+    def cambiar_a_bin(self):
+        print("pendiente")
+
+
     def cambiar_a_abb(self):
         self.mi_arbol = ArbolABB()
         self.statusBar().showMessage("Árbol ABB (Vacío)")
@@ -201,9 +208,9 @@ class AplicacionArboles(QMainWindow):
         encontrado, camino = self.mi_arbol.buscar(valor_a_buscar)
 
         if encontrado:
-            self.statusBar().showMessage(f"Éxito: El nodo {valor_a_buscar} existe. Camino: {camino}")
+            self.ui.p_recorridos.setText(f"Éxito: El nodo {valor_a_buscar} existe. Camino: {camino}")
         else:
-            self.statusBar().showMessage(f"Fallo: El nodo {valor_a_buscar} NO existe. Camino recorrido: {camino}")
+            self.ui.p_recorridos.setText(f"Fallo: El nodo {valor_a_buscar} NO existe. Camino recorrido: {camino}")
 
         self.dibujar_arbol(camino_resaltado=camino)
 

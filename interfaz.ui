@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>732</width>
-    <height>538</height>
+    <width>631</width>
+    <height>553</height>
    </rect>
   </property>
   <property name="palette">
@@ -490,12 +490,25 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="1">
+     <widget class="QGraphicsView" name="lienzo_arbol"/>
+    </item>
+    <item row="1" column="0" colspan="2">
+     <widget class="QTextBrowser" name="p_recorridos">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>41</height>
+       </size>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0">
      <widget class="QFrame" name="frame">
       <property name="minimumSize">
        <size>
         <width>129</width>
-        <height>419</height>
+        <height>434</height>
        </size>
       </property>
       <property name="font">
@@ -515,7 +528,7 @@
          <x>10</x>
          <y>20</y>
          <width>111</width>
-         <height>81</height>
+         <height>111</height>
         </rect>
        </property>
        <property name="palette">
@@ -558,7 +571,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>50</y>
           <width>91</width>
           <height>26</height>
          </rect>
@@ -571,7 +584,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>50</y>
+          <y>80</y>
           <width>91</width>
           <height>26</height>
          </rect>
@@ -580,12 +593,25 @@
          <string>Arbol AVL</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="BTarbol_bin">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>91</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Arbol Binario</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="groupBox_2">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>110</y>
+         <y>150</y>
          <width>111</width>
          <height>151</height>
         </rect>
@@ -653,7 +679,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>290</y>
+         <y>310</y>
          <width>111</width>
          <height>111</height>
         </rect>
@@ -703,19 +729,6 @@
       </widget>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QGraphicsView" name="lienzo_arbol"/>
-    </item>
-    <item row="1" column="0" colspan="2">
-     <widget class="QTextBrowser" name="p_recorridos">
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>41</height>
-       </size>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -723,7 +736,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>732</width>
+     <width>631</width>
      <height>33</height>
     </rect>
    </property>
