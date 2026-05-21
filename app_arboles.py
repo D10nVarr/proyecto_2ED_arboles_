@@ -247,11 +247,12 @@ class AplicacionArboles(QMainWindow):
 
         if encontrado:
             self.ui.p_recorridos.setText(f"Éxito: El nodo {valor_a_buscar} existe. Camino: {camino}")
+            camino_final = camino
         else:
             self.ui.p_recorridos.setText(f"Fallo: El nodo {valor_a_buscar} NO existe. Camino recorrido: {camino}")
+            camino_final = []
 
-        self.dibujar_arbol(camino_resaltado=camino)
-
+        self.dibujar_arbol(camino_resaltado=camino_final)
     def accion_eliminar(self):
         valor_a_eliminar = self.ui.entrada_nodo.value()
 
